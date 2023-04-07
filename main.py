@@ -28,28 +28,28 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
-@app.route("/session_test")
-def session_test():
-    visits_count = session.get('visits_count', 0)
-    session['visits_count'] = visits_count + 1
-    return make_response(
-        f"Вы пришли на эту страницу {visits_count + 1} раз")
+# @app.route("/session_test")
+# def session_test():
+#     visits_count = session.get('visits_count', 0)
+#     session['visits_count'] = visits_count + 1
+#     return make_response(
+#         f"Вы пришли на эту страницу {visits_count + 1} раз")
 
 
-@app.route("/cookie_test")
-def cookie_test():
-    visits_count = int(request.cookies.get("visits_count", 0))
-    if visits_count:
-        res = make_response(
-            f"Вы пришли на эту страницу {visits_count + 1} раз")
-        res.set_cookie("visits_count", str(visits_count + 1),
-                       max_age=60)
-    else:
-        res = make_response(
-            "Вы пришли на эту страницу в первый раз за последние 2 года")
-        res.set_cookie("visits_count", '1',
-                       max_age=60)
-    return res
+# @app.route("/cookie_test")
+# def cookie_test():
+#     visits_count = int(request.cookies.get("visits_count", 0))
+#     if visits_count:
+#         res = make_response(
+#             f"Вы пришли на эту страницу {visits_count + 1} раз")
+#         res.set_cookie("visits_count", str(visits_count + 1),
+#                        max_age=60)
+#     else:
+#         res = make_response(
+#             "Вы пришли на эту страницу в первый раз за последние 2 года")
+#         res.set_cookie("visits_count", '1',
+#                        max_age=60)
+#     return res
 
 
 @app.route("/")
@@ -60,7 +60,18 @@ def index():
             (News.user == current_user) | (News.is_private != True))
     else:
         news = db_sess.query(News).filter(News.is_private != True)
-    return render_template("index.html", news=news)
+    return render_template("open_news.html", news=news)
+
+
+@app.route('/open_news')
+def open_news():
+    db_sess = db_session.create_session()
+    if current_user.is_authenticated:
+        news = db_sess.query(News).filter(
+            (News.user == current_user) | (News.is_private != True))
+    else:
+        news = db_sess.query(News).filter(News.is_private != True)
+    return render_template("open_news.html", news=news)
 
 
 @app.route('/logout')
