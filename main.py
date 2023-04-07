@@ -60,7 +60,7 @@ def index():
             (News.user == current_user) | (News.is_private != True))
     else:
         news = db_sess.query(News).filter(News.is_private != True)
-    return render_template("open_news.html", news=news)
+    return render_template("index.html", news=news)
 
 
 @app.route('/open_news')
