@@ -1,6 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <style>
+        body {
+            background-image: url('static/images/Tank.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+            }
+    </style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet"
@@ -14,7 +22,7 @@
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="/"><b>Лаунчер для танков</b></a>
         <p>
-            <a class="btn btn-primary"  href="/">Главная</a>
+            <a class="btn btn-primary" href="/">Главная</a>
             <a class="btn btn-primary" href="/open_news">Новости</a>
         </p>
         {% if current_user.is_authenticated %}
