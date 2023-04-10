@@ -3,7 +3,6 @@ from flask import Flask, render_template, redirect, request, make_response, sess
 from data import db_session, news_api
 from data.users import User
 from data.news import News
-import datetime
 from forms.user import RegisterForm, LoginForm
 from forms.news import NewsForm
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
@@ -26,30 +25,6 @@ def not_found(error):
 def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
-
-
-# @app.route("/session_test")
-# def session_test():
-#     visits_count = session.get('visits_count', 0)
-#     session['visits_count'] = visits_count + 1
-#     return make_response(
-#         f"Вы пришли на эту страницу {visits_count + 1} раз")
-
-
-# @app.route("/cookie_test")
-# def cookie_test():
-#     visits_count = int(request.cookies.get("visits_count", 0))
-#     if visits_count:
-#         res = make_response(
-#             f"Вы пришли на эту страницу {visits_count + 1} раз")
-#         res.set_cookie("visits_count", str(visits_count + 1),
-#                        max_age=60)
-#     else:
-#         res = make_response(
-#             "Вы пришли на эту страницу в первый раз за последние 2 года")
-#         res.set_cookie("visits_count", '1',
-#                        max_age=60)
-#     return res
 
 
 @app.route("/")
