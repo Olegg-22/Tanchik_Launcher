@@ -49,6 +49,11 @@ def open_news():
     return render_template("open_news.html", news=news)
 
 
+@app.route('/shop')
+def shop():
+    pass
+
+
 @app.route('/logout')
 @login_required
 def logout():
