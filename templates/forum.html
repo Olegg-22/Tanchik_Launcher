@@ -1,6 +1,34 @@
 {% extends "base.html" %}
 
 {% block content %}
+<p>
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample"
+            aria-expanded="false" aria-controls="collapseWidthExample1">
+        Беседа 1
+    </button>
+</p>
+<div style="min-height: 120px;">
+    <div class="collapse collapse-horizontal" id="collapseWidthExample1">
+        <div class="card card-body" style="width: 300px;">
+            Я ещё не сделал форум, но в процессе, пока только так, реолизовать сложно, может у Вас естбь идеи как это
+            сделать?
+        </div>
+    </div>
+</div>
 
+<p>
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample"
+            aria-expanded="false" aria-controls="collapseWidthExample2">
+        Беседа 2
+    </button>
+</p>
+<div style="min-height: 120px;">
+    <div class="collapse collapse-horizontal" id="collapseWidthExample2">
+        <div class="card card-body" style="width: 300px;">
+            Я ещё не сделал форум, но в процессе, пока только так, реолизовать сложно, может у Вас естбь идеи как это
+            сделать?
+        </div>
+    </div>
+</div>
 
 {% endblock %}
