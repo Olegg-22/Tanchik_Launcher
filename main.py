@@ -51,7 +51,7 @@ def open_news():
 
 @app.route('/shop')
 def shop():
-    pass
+    return render_template("open_news.html")
 
 
 @app.route('/logout')
