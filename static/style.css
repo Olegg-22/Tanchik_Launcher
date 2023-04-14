@@ -1,3 +1,8 @@
 body{
     padding 30px;
 }
+
+.carousel-control-next,
+.carousel-control-prev {
+    filter: invert(100%);
+}
