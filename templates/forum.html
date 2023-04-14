@@ -2,33 +2,29 @@
 
 {% block content %}
 <p>
-    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample"
-            aria-expanded="false" aria-controls="collapseWidthExample1">
-        Беседа 1
+    <a class="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button"
+       aria-expanded="false" aria-controls="multiCollapseExample1">Toggle first element</a>
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2"
+            aria-expanded="false" aria-controls="multiCollapseExample2">Toggle second element
+    </button>
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse"
+            aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Toggle both elements
     </button>
 </p>
-<div style="min-height: 120px;">
-    <div class="collapse collapse-horizontal" id="collapseWidthExample1">
-        <div class="card card-body" style="width: 300px;">
-            Я ещё не сделал форум, но в процессе, пока только так, реолизовать сложно, может у Вас естбь идеи как это
-            сделать?
+<div class="row">
+    <div class="col">
+        <div class="collapse multi-collapse" id="multiCollapseExample1">
+            <div class="card card-body">
+                Как мне лучше сделать форум я просто в этом не много понимаю
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="collapse multi-collapse" id="multiCollapseExample2">
+            <div class="card card-body">
+                Мне нужна срочная помощь зала и гостей
+            </div>
         </div>
     </div>
 </div>
-
-<p>
-    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample"
-            aria-expanded="false" aria-controls="collapseWidthExample2">
-        Беседа 2
-    </button>
-</p>
-<div style="min-height: 120px;">
-    <div class="collapse collapse-horizontal" id="collapseWidthExample2">
-        <div class="card card-body" style="width: 300px;">
-            Я ещё не сделал форум, но в процессе, пока только так, реолизовать сложно, может у Вас естбь идеи как это
-            сделать?
-        </div>
-    </div>
-</div>
-
 {% endblock %}
