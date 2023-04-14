@@ -164,13 +164,18 @@ def news_delete(id):
 
 
 @app.route('/forum')
-def donate():
+def forum():
     return render_template('forum.html', title='Форум')
 
 
-# @app.route('/donate')
-# def donate():
-#     return render_template('donate.html', title='Донат')
+@app.route('/support')
+def support():
+    return render_template('support.html', title='Форум')
+
+
+@app.route('/donate')
+def donate():
+    return render_template('donate.html', title='Донат')
 
 
 def main():
