@@ -163,6 +163,11 @@ def news_delete(id):
     return redirect('/')
 
 
+@app.route('/donate')
+def donate():
+    return render_template('donate.html', title='Донат')
+
+
 def main():
     db_session.global_init("db/blogs.db")
     app.register_blueprint(news_api.blueprint)
