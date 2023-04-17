@@ -4,12 +4,17 @@
 {% block content %}
 {% if current_user.is_authenticated %}
 <div class="card" style="margin-top: 200px">
-<!--    <img src="static/images/Map7.png" class="card-img-top" alt="...">-->
+    <!--    <img src="static/images/Map7.png" class="card-img-top" alt="...">-->
 
     <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-            content.</p>
+        <h5 class="card-title">{{ current_user.name }}</h5>
+        <p class="card-text">
+        <ul>
+            <li>Рекорд: 0</li>
+            <li>Любимая карта: НЕТ</li>
+            <li>Текущий скин: <img src="static/images/Blue_tank.png" width="50px" height="50px"></li>
+        </ul>
+        </p>
         <a href="/shop" class="btn btn-primary">Магазин</a>
     </div>
 </div>
