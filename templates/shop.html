@@ -2,6 +2,7 @@
 
 
 {% block content %}
+{% if current_user.is_authenticated %}
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
         style="margin-left:1280px;">
     Пополнить баланс
@@ -35,7 +36,7 @@
         </div>
     </div>
 </div>
-{% if current_user.is_authenticated %}
+
 <div id="carouselExampleControls" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
