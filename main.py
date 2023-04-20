@@ -8,6 +8,8 @@ from forms.news import NewsForm
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_restful import reqparse, abort, Api, Resource
 from data import news_resources
+import smtplib
+from email.mime.text import MIMEText
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -181,6 +183,26 @@ def support():
 @app.route('/donate')
 def donate():
     return render_template('donate.html', title='Донат')
+
+
+@app.route('/send')
+def send_email():
+    letter = request.form['letter']
+    sender = "egorbessolitsyn1@gmail.com"
+    password = 'ujlxjyfxkvnhdvla'
+
+    server = smtplib.SMTP("smtp.gmail.com", 587)
+    server.starttls()
+
+    try:
+        server.login(sender, password)
+        msg = MIMEText(letter)
+        msg["Subject"] = "CLICK ME PLEASE!"
+        server.sendmail(sender, sender, msg.as_string())
+
+        return render_template('support.html', title='Форум')
+    except Exception as _ex:
+        return f"{_ex}\nCheck your login or password please!"
 
 
 def main():
