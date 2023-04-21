@@ -3,6 +3,7 @@ from flask import Flask, render_template, redirect, request, make_response, sess
 from data import db_session, news_api
 from data.users import User
 from data.news import News
+from data.equipment import Equipment
 from forms.user import RegisterForm, LoginForm
 from forms.news import NewsForm
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
@@ -53,7 +54,10 @@ def open_news():
 
 @app.route('/shop')
 def shop():
-    return render_template("shop.html")
+    db_sess = db_session.create_session()
+    if current_user.is_authenticated:
+        equipment = db_sess.query(Equipment).filter((Equipment.user == current_user))
+    return render_template("shop.html", equipment=equipment)
 
 
 @app.route('/logout')
@@ -168,6 +172,31 @@ def news_delete(id):
     else:
         abort(404)
     return redirect('/')
+
+
+@app.route('/equipment&<int:info_equipment>', methods=['GET', 'POST'])
+@login_required
+def add_equipment(info_equipment):
+    db_sess = db_session.create_session()
+    equipment = db_sess.query(Equipment).filter(Equipment.user_id == current_user.id).first()
+    if equipment:
+        db_sess.delete(equipment)
+        db_sess.commit()
+    else:
+        abort(404)
+
+    db_sess = db_session.create_session()
+    equipment = Equipment()
+    equipment.id = current_user.id
+    equipment.user_id = current_user.id
+    equipment.info_equipment = info_equipment
+
+    current_user.equipment.append(equipment)
+    db_sess.merge(current_user)
+    db_sess.commit()
+
+    return redirect('/')
+
 
 
 @app.route('/forum')
