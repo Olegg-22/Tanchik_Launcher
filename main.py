@@ -198,7 +198,6 @@ def add_equipment(info_equipment):
     return redirect('/')
 
 
-
 @app.route('/forum')
 def forum():
     return render_template('forum.html', title='Форум')
@@ -214,7 +213,7 @@ def donate():
     return render_template('donate.html', title='Донат')
 
 
-@app.route('/send')
+@app.route('/send', methods=['GET', 'POST'])
 def send_email():
     letter = request.form['letter']
     sender = "egorbessolitsyn1@gmail.com"
