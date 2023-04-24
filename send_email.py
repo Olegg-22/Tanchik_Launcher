@@ -3,11 +3,11 @@ from email.mime.text import MIMEText
 
 
 def send_email(message):
-    sender = "egorbessolitsyn1@gmail.com"
+    sender = "bessolitsynegor@yandex.ru"
     # your password = "your password"
-    password = 'ujlxjyfxkvnhdvla'
+    password = 'ngubqshgftxcoyhz'
 
-    server = smtplib.SMTP("smtp.gmail.com", 587)
+    server = smtplib.SMTP("smtp.yandex.ru", 587)
     server.starttls()
 
     try:
