@@ -34,11 +34,21 @@ def load_user(user_id):
 def index():
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
+        equipment = db_sess.query(Equipment).filter(Equipment.user_id == current_user.id).first()
+        info_equipment = equipment.info_equipment
+        if info_equipment == '1':
+            type_tank = 'Blue_tank.png'
+        elif info_equipment == '2':
+            type_tank = 'Yellow_tank.png'
+        else:
+            type_tank = 'Green_tank.png'
+
         news = db_sess.query(News).filter(
             (News.user == current_user) | (News.is_private != True))
     else:
+        type_tank = 0
         news = db_sess.query(News).filter(News.is_private != True)
-    return render_template("index.html", news=news)
+    return render_template("index.html", news=news, type_tank=type_tank)
 
 
 @app.route('/open_news')
@@ -55,6 +65,7 @@ def open_news():
 @app.route('/shop')
 def shop():
     db_sess = db_session.create_session()
+    equipment = 0
     if current_user.is_authenticated:
         equipment = db_sess.query(Equipment).filter((Equipment.user == current_user))
     return render_template("shop.html", equipment=equipment)
@@ -179,21 +190,24 @@ def news_delete(id):
 def add_equipment(info_equipment):
     db_sess = db_session.create_session()
     equipment = db_sess.query(Equipment).filter(Equipment.user_id == current_user.id).first()
-    if equipment:
-        db_sess.delete(equipment)
+    if not equipment:
+        db_sess = db_session.create_session()
+        equipment = Equipment()
+        equipment.id = current_user.id
+        equipment.user_id = current_user.id
+        equipment.info_equipment = info_equipment
+
+        current_user.equipment.append(equipment)
+        db_sess.merge(current_user)
+        db_sess.commit()
+    elif equipment:
+        db_sess = db_session.create_session()
+        equipment = db_sess.query(Equipment).filter(Equipment.user_id == current_user.id).first()
+        equipment.info_equipment = info_equipment
+
         db_sess.commit()
     else:
         abort(404)
-
-    db_sess = db_session.create_session()
-    equipment = Equipment()
-    equipment.id = current_user.id
-    equipment.user_id = current_user.id
-    equipment.info_equipment = info_equipment
-
-    current_user.equipment.append(equipment)
-    db_sess.merge(current_user)
-    db_sess.commit()
 
     return redirect('/')
 

@@ -37,13 +37,13 @@
     </div>
 </div>
 
-<div id="carouselExampleControls" class="carousel slide carousel-fade" data-bs-ride="carousel">
+<div id="carousel-tanks" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+        <button type="button" data-bs-target="#carousel-tanks" data-bs-slide-to="0" class="active"
                 aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+        <button type="button" data-bs-target="#carousel-tanks" data-bs-slide-to="1"
                 aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+        <button type="button" data-bs-target="#carousel-tanks" data-bs-slide-to="2"
                 aria-label="Slide 3"></button>
     </div>
     <div class="carousel-inner">
@@ -51,38 +51,45 @@
             <img src="static/images/Blue_tank.png" style="margin-left:500px; margin-top:50px" class="d-block"
                  height="300" width="300"
                  alt="Blue_tank">
+            <div class="carousel-caption top-0" style="margin-left:220px; margin-top:30px">
+                <a type="button" class="btn btn-danger py-2 px-4" href="/equipment&{{1}}">Купить</a>
+            </div>
         </div>
         <div class="carousel-item">
             <img src="static/images/Yellow_tank.png" style="margin-left:500px; margin-top:50px" class="d-block"
                  height="300" width="300"
                  alt="Yellow_tank">
+            <div class="carousel-caption top-0" style="margin-left:220px; margin-top:30px">
+                <a type="button" class="btn btn-danger py-2 px-4" href="/equipment&{{2}}">Купить</a>
+            </div>
         </div>
         <div class="carousel-item">
             <img src="static/images/Green_tank.png" style="margin-left:500px; margin-top:50px" class="d-block"
                  height="300" width="300"
                  alt="Green_tank">
+            <div class="carousel-caption top-0" style="margin-left:220px; margin-top:30px">
+                <a type="button" class="btn btn-danger py-2 px-4" href="/equipment&{{3}}">Купить</a>
+            </div>
         </div>
     </div>
-    <button style="margin-left:350px; margin-top:50px" class="carousel-control-prev" type="button"
-            data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+    <button style="margin-left:400px; margin-top:165px" class="carousel-control-prev" type="button"
+            data-bs-target="#carousel-tanks" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Предыдущий</span>
     </button>
-    <button style="margin-right:350px; margin-top:50px" class="carousel-control-next" type="button"
-            data-bs-target="#carouselExampleControls" data-bs-slide="next">
+    <button style="margin-right:400px; margin-top:165px" class="carousel-control-next" type="button"
+            data-bs-target="#carousel-tanks" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Следующий</span>
     </button>
 </div>
 
 
-{% for item in equipment %}
-<div>
-    {% if current_user.is_authenticated and current_user.id == item.user_id %}
-        <a type="nav-link" class="btn btn-primary" href="/equipment&{{ item.info_equipment }}" style="margin-left:600px;">Купить</a>
-    {% endif %}
-</div>
-{% endfor %}
+<!--{% for item in equipment %}-->
+<!--<div>-->
+<!--    {% if current_user.is_authenticated and current_user.id == item.user_id %}-->
+<!--    <a type="nav-link" class="btn btn-primary" href="/equipment&{{ item.info_equipment }}" style="margin-left:600px;">Купить</a>-->
+<!--    {% endif %}-->
+<!--</div>-->
+<!--{% endfor %}-->
 
 
 {% else %}
