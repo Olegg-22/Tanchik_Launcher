@@ -47,6 +47,7 @@ def index():
             file = request.files['photo']
             path = f'static/images/{file.filename}'
             file.save(path)
+            type_tank = file.filename
     else:
         type_tank = 'Green_tank.png'
         news = db_sess.query(News).filter(News.is_private != True)
