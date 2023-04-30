@@ -233,8 +233,8 @@ def donate():
 @app.route('/send', methods=['GET', 'POST'])
 def send_email():
     letter = request.form['letter']
-    sender = "egorbessolitsyn1@gmail.com"
-    password = 'ujlxjyfxkvnhdvla'
+    sender = 'tankistsniper123456@gmail.com'
+    password = 'mktfsmsfxjxdfpjw'
 
     server = smtplib.SMTP("smtp.gmail.com", 587)
     server.starttls()
