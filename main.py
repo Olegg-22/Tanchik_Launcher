@@ -30,7 +30,7 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def index():
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
@@ -43,6 +43,11 @@ def index():
 
         news = db_sess.query(News).filter(
             (News.user == current_user) | (News.is_private != True))
+        if request.method == "POST":
+            file = request.files['photo']
+            path = f'static/images/{file.filename}'
+            file.save(path)
+            type_tank = file.filename
     else:
         type_tank = 'Green_tank.png'
         news = db_sess.query(News).filter(News.is_private != True)
