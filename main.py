@@ -35,18 +35,21 @@ def index():
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
         equipment = db_sess.query(Equipment).filter(Equipment.user_id == current_user.id).first()
-        info_equipment = equipment.info_equipment
-        if info_equipment == '1':
-            type_tank = 'Blue_tank.png'
-        elif info_equipment == '2':
-            type_tank = 'Yellow_tank.png'
+        if equipment:
+            info_equipment = equipment.info_equipment
+            if info_equipment == '1':
+                type_tank = 'Blue_tank.png'
+            elif info_equipment == '2':
+                type_tank = 'Yellow_tank.png'
+            elif info_equipment == '3':
+                type_tank = 'Green_tank.png'
         else:
             type_tank = 'Green_tank.png'
 
         news = db_sess.query(News).filter(
             (News.user == current_user) | (News.is_private != True))
     else:
-        type_tank = 0
+        type_tank = 'Green_tank.png'
         news = db_sess.query(News).filter(News.is_private != True)
     return render_template("index.html", news=news, type_tank=type_tank)
 
