@@ -59,7 +59,7 @@ def index():
             file.save(path)
             file_filename = file.filename
             type_tank = file.filename
-            add_equipment(type_tank, file)
+            add_equipment(type_tank)
     else:
         type_tank = 'Green_tank.png'
         news = db_sess.query(News).filter(News.is_private != True)
@@ -202,60 +202,35 @@ def news_delete(id):
 
 @app.route('/equipment&<info_equipment>', methods=['GET', 'POST'])
 @login_required
-def add_equipment(info_equipment, file_img=None):
+def add_equipment(info_equipment):
     global self_picture
-    if file_img:
+    db_sess = db_session.create_session()
+    equipment = db_sess.query(Equipment).filter(Equipment.user_id == current_user.id).first()
+    if not equipment:
+        db_sess = db_session.create_session()
+        equipment = Equipment()
+        equipment.id = current_user.id
+        equipment.user_id = current_user.id
+        equipment.info_equipment = info_equipment
+        img = open(f'static/images/{info_equipment}', 'rb').read()
+        equipment.image_equipment = img
+
+        current_user.equipment.append(equipment)
+        db_sess.merge(current_user)
+        db_sess.commit()
+    elif equipment:
         db_sess = db_session.create_session()
         equipment = db_sess.query(Equipment).filter(Equipment.user_id == current_user.id).first()
-        if not equipment:
-            db_sess = db_session.create_session()
-            equipment = Equipment()
-            equipment.id = current_user.id
-            equipment.user_id = current_user.id
-            equipment.info_equipment = file_img.filename
-            img = open(f'static/images/{info_equipment}', 'rb').read()
-            equipment.image_equipment = img
+        equipment.info_equipment = info_equipment
+        img = open(f'static/images/{info_equipment}', 'rb').read()
+        equipment.image_equipment = img
 
-            current_user.equipment.append(equipment)
-            db_sess.merge(current_user)
-            db_sess.commit()
-        elif equipment:
-            db_sess = db_session.create_session()
-            equipment = db_sess.query(Equipment).filter(Equipment.user_id == current_user.id).first()
-            equipment.info_equipment = file_img.filename
-            img = open(f'static/images/{info_equipment}', 'rb').read()
-            equipment.image_equipment = img
-
-            db_sess.commit()
-
+        db_sess.commit()
     else:
-        db_sess = db_session.create_session()
-        equipment = db_sess.query(Equipment).filter(Equipment.user_id == current_user.id).first()
-        if not equipment:
-            db_sess = db_session.create_session()
-            equipment = Equipment()
-            equipment.id = current_user.id
-            equipment.user_id = current_user.id
-            equipment.info_equipment = info_equipment
-            img = open(f'static/images/{info_equipment}', 'rb').read()
-            equipment.image_equipment = img
+        abort(404)
 
-            current_user.equipment.append(equipment)
-            db_sess.merge(current_user)
-            db_sess.commit()
-        elif equipment:
-            db_sess = db_session.create_session()
-            equipment = db_sess.query(Equipment).filter(Equipment.user_id == current_user.id).first()
-            equipment.info_equipment = info_equipment
-            img = open(f'static/images/{info_equipment}', 'rb').read()
-            equipment.image_equipment = img
-
-            db_sess.commit()
-        else:
-            abort(404)
-
-        self_picture = 1
-        return redirect('/')
+    self_picture = 1
+    return redirect('/')
 
 
 @app.route('/forum')
