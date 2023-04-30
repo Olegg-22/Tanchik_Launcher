@@ -37,12 +37,7 @@ def index():
         equipment = db_sess.query(Equipment).filter(Equipment.user_id == current_user.id).first()
         if equipment:
             info_equipment = equipment.info_equipment
-            if info_equipment == '1':
-                type_tank = 'Blue_tank.png'
-            elif info_equipment == '2':
-                type_tank = 'Yellow_tank.png'
-            elif info_equipment == '3':
-                type_tank = 'Green_tank.png'
+            type_tank = info_equipment
         else:
             type_tank = 'Green_tank.png'
 
@@ -188,7 +183,7 @@ def news_delete(id):
     return redirect('/')
 
 
-@app.route('/equipment&<int:info_equipment>', methods=['GET', 'POST'])
+@app.route('/equipment&<info_equipment>', methods=['GET', 'POST'])
 @login_required
 def add_equipment(info_equipment):
     db_sess = db_session.create_session()
