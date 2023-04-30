@@ -13,6 +13,7 @@ class Equipment(SqlAlchemyBase, SerializerMixin):
 
     user_id = sqlalchemy.Column(sqlalchemy.Integer,
                                 sqlalchemy.ForeignKey("users.id"))
+    image_equipment = sqlalchemy.Column(sqlalchemy.BLOB, nullable=False)
 
     user = orm.relationship('User', back_populates='equipment')
 

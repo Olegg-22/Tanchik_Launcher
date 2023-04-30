@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, redirect, request, make_response, session, abort, jsonify
+from flask import Flask, render_template, redirect, request, make_response, session, abort, jsonify, url_for
 from data import db_session, news_api
 from data.users import User
 from data.news import News
@@ -194,6 +194,8 @@ def add_equipment(info_equipment):
         equipment.id = current_user.id
         equipment.user_id = current_user.id
         equipment.info_equipment = info_equipment
+        img = open(f'static/images/{info_equipment}', 'rb').read()
+        equipment.image_equipment = img
 
         current_user.equipment.append(equipment)
         db_sess.merge(current_user)
@@ -202,12 +204,19 @@ def add_equipment(info_equipment):
         db_sess = db_session.create_session()
         equipment = db_sess.query(Equipment).filter(Equipment.user_id == current_user.id).first()
         equipment.info_equipment = info_equipment
+        img = open(f'static/images/{info_equipment}', 'rb').read()
+        equipment.image_equipment = img
 
         db_sess.commit()
     else:
         abort(404)
 
     return redirect('/')
+
+@app.route('/Blue_tank')
+def give_Blue_tank():
+    return
+
 
 
 @app.route('/forum')
