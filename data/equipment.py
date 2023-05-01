@@ -19,4 +19,3 @@ class Equipment(SqlAlchemyBase, SerializerMixin):
 
     def __repr__(self):
         return f'<User:> {self.id}  <info_equipment:> {self.info_equipment}'
-

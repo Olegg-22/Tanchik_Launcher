@@ -19,5 +19,3 @@ class NewsResource_eqiupment(Resource):
         equipment = session.query(Equipment).get(user_id)
         image_equipment = equipment.image_equipment
         return jsonify(inf_equipment=str(image_equipment))
-        # return jsonify({'inf_equipment': equipment.to_dict(
-        #     only=('info_equipment', 'image_equipment'))})
