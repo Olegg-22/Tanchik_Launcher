@@ -18,8 +18,8 @@ login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 api = Api(app)
 
-self_picture = 0
-file_filename = 0
+self_picture = []
+file_filename = []
 
 
 @app.errorhandler(404)
@@ -36,12 +36,20 @@ def load_user(user_id):
 @app.route("/", methods=['GET', 'POST'])
 def index():
     global self_picture, file_filename
-    if self_picture:
-        try:
-            os.remove(f'static/images/{file_filename}')
-            self_picture = 0
-        except Exception:
-            pass
+    if current_user.is_authenticated:
+        if self_picture and current_user.id == self_picture[-1] and len(self_picture) != 1:
+            try:
+                os.remove(f'static/images/{file_filename[self_picture.index(current_user.id)]}')
+            except Exception:
+                pass
+        elif self_picture and current_user.id in self_picture and len(self_picture) != 1:
+            name = file_filename[self_picture.index(current_user.id)]
+            s_pict = current_user.id
+            file_filename.pop(self_picture.index(current_user.id))
+            self_picture.pop(self_picture.index(current_user.id))
+            self_picture.append(s_pict)
+            file_filename.append(name)
+
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
         equipment = db_sess.query(Equipment).filter(Equipment.user_id == current_user.id).first()
@@ -57,9 +65,10 @@ def index():
             file = request.files['photo']
             path = f'static/images/{file.filename}'
             file.save(path)
-            file_filename = file.filename
+            file_filename.append(file.filename)
             type_tank = file.filename
-            add_equipment(type_tank)
+            self_tank = 1
+            add_equipment(type_tank, self_tank)
     else:
         type_tank = 'Green_tank.png'
         news = db_sess.query(News).filter(News.is_private != True)
@@ -89,16 +98,12 @@ def shop():
 @app.route('/logout')
 @login_required
 def logout():
-    global self_picture
-    self_picture = 0
     logout_user()
     return redirect("/")
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    global self_picture
-    self_picture = 0
     form = LoginForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -114,8 +119,6 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
-    global self_picture
-    self_picture = 0
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
@@ -142,8 +145,6 @@ def reqister():
 @app.route('/news', methods=['GET', 'POST'])
 @login_required
 def add_news():
-    global self_picture
-    self_picture = 0
     form = NewsForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -162,8 +163,6 @@ def add_news():
 @app.route('/news&<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_news(id):
-    global self_picture
-    self_picture = 0
     form = NewsForm()
     if request.method == "GET":
         db_sess = db_session.create_session()
@@ -198,8 +197,6 @@ def edit_news(id):
 @app.route('/news_delete&<int:id>', methods=['GET', 'POST'])
 @login_required
 def news_delete(id):
-    global self_picture
-    self_picture = 0
     db_sess = db_session.create_session()
     news = db_sess.query(News).filter(News.id == id,
                                       News.user == current_user
@@ -214,7 +211,7 @@ def news_delete(id):
 
 @app.route('/equipment&<info_equipment>', methods=['GET', 'POST'])
 @login_required
-def add_equipment(info_equipment):
+def add_equipment(info_equipment, self_tank=None):
     global self_picture
     db_sess = db_session.create_session()
     equipment = db_sess.query(Equipment).filter(Equipment.user_id == current_user.id).first()
@@ -241,7 +238,8 @@ def add_equipment(info_equipment):
     else:
         abort(404)
 
-    self_picture = 1
+    if self_tank:
+        self_picture.append(current_user.id)
     return redirect('/')
 
 
