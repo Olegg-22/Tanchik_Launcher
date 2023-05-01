@@ -8,7 +8,7 @@ from forms.user import RegisterForm, LoginForm
 from forms.news import NewsForm
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_restful import reqparse, abort, Api, Resource
-from data import news_resources
+from data import news_resources, equipment_resources
 import smtplib
 from email.mime.text import MIMEText
 
@@ -89,12 +89,16 @@ def shop():
 @app.route('/logout')
 @login_required
 def logout():
+    global self_picture
+    self_picture = 0
     logout_user()
     return redirect("/")
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    global self_picture
+    self_picture = 0
     form = LoginForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -110,6 +114,8 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
+    global self_picture
+    self_picture = 0
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
@@ -136,6 +142,8 @@ def reqister():
 @app.route('/news', methods=['GET', 'POST'])
 @login_required
 def add_news():
+    global self_picture
+    self_picture = 0
     form = NewsForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -154,6 +162,8 @@ def add_news():
 @app.route('/news&<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_news(id):
+    global self_picture
+    self_picture = 0
     form = NewsForm()
     if request.method == "GET":
         db_sess = db_session.create_session()
@@ -188,6 +198,8 @@ def edit_news(id):
 @app.route('/news_delete&<int:id>', methods=['GET', 'POST'])
 @login_required
 def news_delete(id):
+    global self_picture
+    self_picture = 0
     db_sess = db_session.create_session()
     news = db_sess.query(News).filter(News.id == id,
                                       News.user == current_user
@@ -273,6 +285,7 @@ def main():
     app.register_blueprint(news_api.blueprint)
     api.add_resource(news_resources.NewsListResource, '/api/v2/news')
     api.add_resource(news_resources.NewsResource, '/api/v2/news&<int:news_id>')
+    api.add_resource(equipment_resources.NewsResource_eqiupment, '/api/equipment&<int:user_id>')
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
 
